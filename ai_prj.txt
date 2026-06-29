@@ -1,0 +1,58 @@
+Ecco un sunto tecnico strutturato del progetto **SAPRI Sort**, progettato per essere "digerito" da un'altra AI o da un collaboratore tecnico. Questo documento spiega l'architettura, le sfide di memoria risolte e la logica dei file.
+
+---
+
+## 🚀 Progetto SAPRI Sort: Radix In-Place ad Alte Prestazioni
+
+### 1. Obiettivo del Progetto
+Creare l'algoritmo di ordinamento per interi (`u32`) più veloce in ambito **Database/Data Center**, risolvendo il limite storico del Radix Sort: l'elevato consumo di memoria RAM. SAPRI mira a eguagliare o superare *Voracious Radix* usando il **95% di memoria in meno**.
+
+### 2. Punti Chiave dell'Algoritmo
+L'algoritmo si basa su una strategia **Ibrida a 2 Passate (16-bit)** per minimizzare i movimenti di memoria:
+
+* **Passata 1 (LSD - Least Significant Digit):**
+    * Analizza i primi 16 bit (0-65535).
+    * Utilizza un `counting_sort_u16` con **scrittura lineare**.
+    * **Vantaggio:** Sfrutta la massima velocità di scrittura sequenziale della CPU.
+* **Passata 2 (MSD - Most Significant Digit):**
+    * Analizza i restanti 16 bit.
+    * Utilizza la tecnica **In-Place Cycle-Following** (Permutazione a catena).
+    * **Vantaggio:** Non richiede un array di appoggio (*scratch buffer*). Ogni elemento viene spostato una sola volta verso la sua destinazione finale.
+
+### 3. Difficoltà Risolte
+* **Memory Wall:** Invece di richiedere $O(n)$ memoria extra (come i Radix classici), SAPRI usa solo un **BitSet** per tracciare le posizioni visitate ($1.25$ bit per elemento).
+* **Cache Optimization:** Lavorando con blocchi da 16-bit, le tabelle di frequenza ($65536$ entry) rimangono nella cache **L2/L3**, evitando i ritardi della RAM principale.
+* **Branch Prediction:** Sostituzione di loop complessi con la logica `.iter().zip()`, eliminando i controlli sui limiti degli array (*bounds check*) e rendendo il codice lineare per la pipeline della CPU.
+* **In-Place Stability:** Risolto il problema del "posto vuoto" durante gli swap tramite una gestione a catena: il valore sovrascritto diventa il nuovo valore "in volo" da piazzare.
+
+
+
+---
+
+### 4. Struttura dei File e Moduli
+
+#### `src/lib.rs` (Il Cuore)
+Contiene il motore principale e la logica di analisi della profondità (depth). Decide se eseguire una passata singola o multipla in base alla distribuzione dei dati.
+
+#### `src/test_inplace.rs` (Modulo di Sviluppo Isolato)
+File creato per velocizzare la compilazione incrementale. Contiene:
+* `calculate_offsets`: La funzione che trasforma l'istogramma in puntatori di destinazione usando `.zip()`.
+* `reorder_inplace_u16_unsafe`: La funzione critica che usa `unsafe { data.get_unchecked_mut() }` per il riordino senza buffer temporanei.
+
+#### `benches/sapri_bench.rs`
+Suite di test comparativi che misura SAPRI contro il sort standard di Rust su diversi scenari:
+* **L0-L3:** Dati distribuiti su range di bit crescenti.
+* **Full u32:** Test su tutto il range a 32 bit.
+* **Concentrated/Grouped:** Simulazione di distribuzioni tipiche dei Database.
+
+---
+
+### 5. Istruzioni per lo Sviluppo Futuro
+L'AI che subentra deve concentrarsi sull'integrazione della **Passata 1 Lineare** con la **Passata 2 In-Place**. 
+
+* **Criticità:** La Passata 2 deve essere eseguita con un BitSet per evitare di spostare elementi già ordinati dalla Passata 1.
+* **Ottimizzazione:** Usare `u64` per il BitSet per processare 64 elementi con un singolo accesso alla memoria.
+
+---
+
+**Cosa vuoi che chieda alla prossima AI di analizzare specificamente?** Se vuoi, posso preparare un "test case" da farle risolvere per validare la logica del BitSet a 64-bit.

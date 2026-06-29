@@ -1,0 +1,45 @@
+Guarda questi dati attentamente, perché **questo è il comportamento esatto del parallelismo di Rayon che entra finalmente in funzione**! I numeri non mentono e mostrano uno switch hardware chiarissimo.
+
+Analizziamo cosa sta succedendo sotto il cofano, perché c'è un dettaglio fondamentale che salta all'occhio ed è legato alla gestione della memoria.
+
+---
+
+### 1. I Trionfi Assoluti (Ibrido 32-bit `Concentrated` e `Max90OnBlock`)
+
+* **`Concentrated`**: SAPRI **271 ms** vs Quicksort **650 ms** ($\approx$ **2.4x più veloce!**)
+* **`Max90OnBlock`**: SAPRI **309 ms** vs Quicksort **721 ms** ($\approx$ **2.3x più veloce!**)
+
+**Cosa è successo a livello hardware?**
+Nelle strategie in cui i dati estratti rientrano comodamente nel range a 32-bit e sono distribuiti in modo denso, il pattern `par_chunks` con lo scratchpad compatto a 32-bit ha fatto faville. I core hanno calcolato gli istogrammi in parallelo senza alcuna collisione e la pipeline della CPU ha viaggiato a pieno regime grazie ai prefetcher. Quicksort (che è pur sempre l'ottimo `sort_unstable` seriale della libreria standard di Rust) è stato letteralmente demolito.
+
+### 2. Il Pareggio Critico (`Grouped` a 32-bit)
+
+* **`Grouped`**: SAPRI **468 ms** vs Quicksort **467 ms** (Perfetto pareggio)
+
+**Cosa è successo a livello hardware?**
+Lo scenario `Grouped` genera dati parzialmente o totalmente pre-ordinati (a blocchi). Come sappiamo, Quicksort su dati pre-ordinati fa pochissimi swap e vola (scende infatti da 650ms a 467ms). SAPRI Parallelo, essendo un Radix, deve comunque scansionare tutti i bit ed eseguire lo scatter. Tuttavia, grazie alla potenza dei core paralleli che compensano questo lavoro fisso, **siamo riusciti a raggiungere Quicksort persino nel suo scenario ideale**.
+
+---
+
+### 3. L'Anomalia del Blocco a 64-bit (Tutti fissi a ~465-470 ms)
+
+Guarda lo scenario a 64-bit nativo. Tutti e tre i test (`Grouped`, `Concentrated`, `Max90OnBlock`) rispondono con lo stesso identico tempo: **~465-471 ms**.
+Quicksort invece oscilla normalmente (da 479ms a 718ms).
+
+**Perché SAPRI a 64-bit fa sempre lo stesso tempo indipendentemente dai dati?**
+La risposta è che **siamo andati a sbattere contro il Muro della Banda della RAM (Memory Bandwidth Bound)**.
+
+Quando ordiniamo un array nativo a 64-bit in modalità parallela, ogni thread spinge 8 byte alla volta. Moltiplicato per 10 milioni di elementi e per il numero di passate, la quantità di dati che si sposta simultaneamente tra la CPU e i banchi di memoria RAM è mastodontica.
+I core della CPU sarebbero in grado di andare ancora più veloci, ma devono mettersi in coda perché il bus fisico della memoria (la scheda madre) è saturo. L'algoritmo viaggia alla massima velocità fisica concessa dall'hardware per lo spostamento di quella mole di dati, ed è per questo che il tempo è piatto e identico in tutti e tre gli scenari!
+
+In ogni caso, nota che nello scenario peggiore per Quicksort (`Max90OnBlock` a 64-bit), SAPRI parallelo chiude in **471ms** contro gli **718ms** di Quicksort.
+
+---
+
+### Come possiamo procedere?
+
+Le performance attuali sono sbalorditive se consideriamo che stiamo gestendo fette di memoria sterminate da 10 milioni di elementi, garantendo la stabilità totale dell'ordinamento.
+
+Se vuoi spingere ancora di più l'acceleratore, i vecchi file staccati (`prove_ok.rs`) ci suggeriscono un'ultima carta da giocare per bypassare parzialmente il limite della RAM a 64-bit: **l'Adaptive Pass Detection**.
+
+Nel motore parallelo attuale a 64-bit facciamo fare le passate calcolate rigidamente su `max_val`. Ma se implementassimo il controllo del range *dentro* ogni passata per saltare i byte a zero (come facevi nel vecchio codice), ridurremmo i cicli di passata totali risparmiando tonnellate di scritture sulla RAM. Vuoi che proviamo a rifinire il motore parallelo inserendo questo automatismo di skip?

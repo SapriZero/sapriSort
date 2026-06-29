@@ -1,0 +1,164 @@
+--- group: Depth=1, ---
+------------------------------------------------
+
+--- group:by sizes  Size=10000, Depth=1, ---
+------------------------------------------------
+--- Testing: Size=10000, Depth=1, Strategy=Grouped ---
+SAPRI: 384.544µs
+Quicksort: 6.903555ms
+--- Testing: Size=10000, Depth=1, Strategy=Concentrated ---
+SAPRI: 382.728µs
+Quicksort: 7.013275ms
+--- Testing: Size=10000, Depth=1, Strategy=Max90OnBlock ---
+SAPRI: 400.118µs
+Quicksort: 8.226898ms
+--- group:by sizes  Size=100000, Depth=1, ---
+------------------------------------------------
+--- Testing: Size=100000, Depth=1, Strategy=Grouped ---
+SAPRI: 4.142887ms
+Quicksort: 72.946075ms
+--- Testing: Size=100000, Depth=1, Strategy=Concentrated ---
+SAPRI: 4.823067ms
+Quicksort: 67.827022ms
+--- Testing: Size=100000, Depth=1, Strategy=Max90OnBlock ---
+SAPRI: 3.768122ms
+Quicksort: 68.78915ms
+--- group:by sizes  Size=1000000, Depth=1, ---
+------------------------------------------------
+--- Testing: Size=1000000, Depth=1, Strategy=Grouped ---
+SAPRI: 46.237761ms
+Quicksort: 579.271851ms
+--- Testing: Size=1000000, Depth=1, Strategy=Concentrated ---
+SAPRI: 46.450147ms
+Quicksort: 576.736139ms
+--- Testing: Size=1000000, Depth=1, Strategy=Max90OnBlock ---
+SAPRI: 44.666552ms
+Quicksort: 586.142719ms
+
+
+[L0 (8-bit range)] SAPRI (depth=1): 58.717765ms | Ref: 280.167306ms | 4.77x  ✓
+test bench_depth_1 ... ok
+[Concentrated 10M] SAPRI (depth=4): 458.496037ms | Ref: 684.083571ms | 1.49x  ✓
+test bench_concentrated_10m ... ok
+[L1 (16-bit range)] SAPRI (depth=2): 73.816328ms | Ref: 500.037861ms | 6.77x  ✓
+test bench_depth_2 ... ok
+[L2 (24-bit range)] SAPRI (depth=3): 472.802941ms | Ref: 716.403889ms | 1.52x  ✓
+test bench_depth_3 ... ok
+[L3 (32-bit range)] SAPRI (depth=4): 439.092837ms | Ref: 674.137176ms | 1.54x  ✓
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI (depth=4): 426.289909ms | Ref: 727.23965ms | 1.71x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 486.171449ms | Ref: 687.993669ms | 1.42x  ✓
+test bench_full_u32_10m_old ... ok
+[L0 counting 256v 10M] SAPRI (depth=1): 42.488183ms | Ref: 284.363547ms | 6.69x  ✓
+test bench_l0_256vals_10m ... ok
+[Grouped 10M] SAPRI (depth=4): 478.125522ms | Ref: 822.33967ms | 1.72x  ✓
+test bench_grouped_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 85.841357ms | Ref: 488.771034ms | 5.69x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 3-pass: 401.387499ms | 4-pass: 444.816731ms | Guadagno: +9.8%
+test bench_passes_efficiency ... ok
+[Max90OnBlock 10M] SAPRI (depth=4): 352.722987ms | Ref: 574.47627ms | 1.63x  ✓
+test bench_max90_10m ... ok
+
+------------------------------------------------------------------------------
+
+
+>>> Benchmark Depth: 4 len 2000000
+--- Size: 1000000, Strategy: Grouped ---
+SAPRI: 37.083721ms
+Quicksort: 48.030593ms
+--- Size: 1000000, Strategy: Concentrated ---
+SAPRI: 51.630173ms
+Quicksort: 48.299554ms
+--- Size: 1000000, Strategy: Max90OnBlock ---
+SAPRI: 36.107821ms
+Quicksort: 47.913608ms
+
+SAPRI: 59.577548ms
+Quicksort: 50.350251ms
+--- Size: 1000000, Strategy: Concentrated ---
+SAPRI: 42.415588ms
+Quicksort: 48.26617msMax90OnBlock ---
+SAPRI: 41.648166ms
+Quicksort: 50.238714ms
+
+
+
+
+-- Strategia di generazione: Grouped ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 397.017948ms
+Quicksort: 620.759722ms
+
+--- Strategia di generazione: Concentrated ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 352.644498ms
+Quicksort: 502.542741ms
+
+--- Strategia di generazione: Max90OnBlock ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 353.828604ms
+Quicksort: 570.222582ms
+
+
+
+--- Strategia di generazione: Grouped ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 385.313556ms
+Quicksort: 622.812224ms
+
+--- Strategia di generazione: Concentrated ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 358.258639ms
+Quicksort: 498.456318ms
+
+--- Strategia di generazione: Max90OnBlock ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 358.416486ms
+Quicksort: 569.797302ms
+
+SAPRI: 436.749722ms
+Quicksort: 619.373256ms
+
+--- Strategia di generazione: Concentrated ---
+>>> Depth: 4, Size: 10000000
+SAPRI: 409.460946ms
+Quicksort: 496.21327ms
+
+--- Strategia di generazione: Max90OnBlock ---
+>>> Depth: 4, Size: 10 000 000
+SAPRI: 411.260634ms
+Quicksort: 565.199744ms
+
+
+
+
+>> Depth: 1, Size: 10000000
+SAPRI: 154.516102ms
+Quicksort: 217.123963ms
+
+--- Strategia di generazione: Concentrated ---
+>>> Depth: 1, Size: 10000000
+SAPRI: 154.450381ms
+Quicksort: 213.522082ms
+
+--- Strategia di generazione: Max90OnBlock ---
+>>> Depth: 1, Size: 10000000
+SAPRI: 160.056653ms
+Quicksort: 208.392833ms
+
+>>> Depth: 1, Size: 10000000
+SAPRI: 163.00964ms
+Quicksort: 211.654651ms
+
+--- Strategia di generazione: Concentrated ---
+>>> Depth: 1, Size: 10000000
+SAPRI: 165.225709ms
+Quicksort: 212.213733ms
+
+--- Strategia di generazione: Max90OnBlock ---
+>>> Depth: 1, Size: 10000000
+SAPRI: 165.612427ms
+Quicksort: 211.370266ms
+

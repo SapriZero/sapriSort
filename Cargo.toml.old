@@ -1,0 +1,37 @@
+[package]
+name = "sapri_sort"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "sapriSortCli"
+path = "src/main.rs"
+
+[[bin]]
+name = "reorder_inplace"
+path = "src/reorder_inplace.rs"
+
+[[test]]
+name = "bench_sort"
+path = "tests/bench_sort.rs"
+
+[[test]]
+name = "correctness"
+path = "tests/correctness.rs"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[dependencies]
+rand = { version = "0.8", features = ["std"] }
+rayon = "1.11.0"
+
+[features]
+default = ["threadsafe"]
+threadsafe = []

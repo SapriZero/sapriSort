@@ -1,0 +1,218 @@
+[Adv vs Ser - Grouped 5M] Serial: 239.063571ms | Adaptive: 324.116672ms | Guadagno: -35.6%
+test bench_adv_grouped_5m ... ok
+[Adv vs Ser - Concentrated 5M] Serial: 209.789322ms | Adaptive: 291.050924ms | Guadagno: -38.7%
+test bench_adv_concentrated_5m ... ok
+[Adv vs Ser - Uniform 5M] Serial: 346.680595ms | Adaptive: 285.287231ms | Guadagno: +17.7%
+test bench_adv_uniform_5m ... ok
+[Concentrated 10M] SAPRI Auto: 442.749141ms | unstable: 849.931918ms | 1.92x  ✓
+test bench_concentrated_10m ... ok
+[L0 (8-bit range)] DEPTH TEST (1): 184.179531ms | Ref: 321.280609ms | 1.74x
+test bench_depth_1 ... ok
+[L1 (16-bit range)] DEPTH TEST (2): 266.815479ms | Ref: 493.225328ms | 1.85x
+test bench_depth_2 ... ok
+[L2 (24-bit range)] DEPTH TEST (3): 515.195804ms | Ref: 724.856059ms | 1.41x
+test bench_depth_3 ... ok
+[L3 (32-bit range)] DEPTH TEST (4): 486.31246ms | Ref: 711.047363ms | 1.46x
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI Auto: 435.642742ms | unstable: 884.695384ms | 2.03x  ✓
+test bench_full_u32_10m ... ok
+[Grouped 10M] SAPRI Auto: 495.878968ms | unstable: 810.12665ms | 1.63x  ✓
+test bench_grouped_10m ... ok
+[L0 counting 256v 10M] SAPRI Auto: 174.236438ms | unstable: 293.165106ms | 1.68x  ✓
+test bench_l0_256vals_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI Auto: 247.11989ms | unstable: 508.902364ms | 2.06x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 4-pass: 529.807963ms | 3-pass: 428.823812ms | -19.1%
+test bench_needed_passes_saving ... ok
+[Max90OnBlock 10M] SAPRI Auto: 369.286983ms | unstable: 573.629835ms | 1.55x  ✓
+test bench_max90_10m ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.25s
+
+[Adv vs Ser - Grouped 5M] Serial: 260.401673ms | Adaptive: 267.037705ms | Guadagno: -2.5%
+test bench_adv_grouped_5m ... ok
+[Adv vs Ser - Concentrated 5M] Serial: 203.482103ms | Adaptive: 225.983987ms | Guadagno: -11.1%
+test bench_adv_concentrated_5m ... ok
+[Adv vs Ser - Uniform 5M] Serial: 238.86221ms | Adaptive: 234.413908ms | Guadagno: +1.9%
+test bench_adv_uniform_5m ... ok
+[Concentrated 10M] SAPRI Auto: 438.783281ms | unstable: 629.212207ms | 1.43x  ✓
+test bench_concentrated_10m ... ok
+[L0 (8-bit range)] DEPTH TEST (1): 336.951505ms | Ref: 273.917693ms | 0.81x
+test bench_depth_1 ... ok
+[L1 (16-bit range)] DEPTH TEST (2): 243.33349ms | Ref: 584.99276ms | 2.40x
+test bench_depth_2 ... ok
+[L2 (24-bit range)] DEPTH TEST (3): 487.320139ms | Ref: 719.566501ms | 1.48x
+test bench_depth_3 ... ok
+[L3 (32-bit range)] DEPTH TEST (4): 397.116347ms | Ref: 727.466881ms | 1.83x
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI Auto: 417.689126ms | unstable: 770.035397ms | 1.84x  ✓
+test bench_full_u32_10m ... ok
+[Grouped 10M] SAPRI Auto: 475.421166ms | unstable: 784.405584ms | 1.65x  ✓
+test bench_grouped_10m ... ok
+[L0 counting 256v 10M] SAPRI Auto: 161.076241ms | unstable: 273.189307ms | 1.70x  ✓
+test bench_l0_256vals_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI Auto: 225.284794ms | unstable: 483.928191ms | 2.15x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 4-pass: 522.822114ms | 3-pass: 445.463442ms | -14.8%
+test bench_needed_passes_saving ... ok
+[Max90OnBlock 10M] SAPRI Auto: 343.828971ms | unstable: 580.880174ms | 1.69x  ✓
+test bench_max90_10m ... ok
+
+[Adv vs Ser - Grouped 5M] Serial: 222.933266ms | Adaptive: 248.390096ms | Guadagno: -11.4%
+[Adv vs Ser - Concentrated 5M] Serial: 202.169103ms | Adaptive: 254.243253ms | Guadagno: -25.8%
+test bench_adv_grouped_5m ... ok
+test bench_adv_concentrated_5m ... ok
+[Adv vs Ser - Uniform 5M] Serial: 232.710693ms | Adaptive: 236.364742ms | Guadagno: -1.6%
+test bench_adv_uniform_5m ... ok
+[Concentrated 10M] SAPRI Auto: 415.565478ms | unstable: 654.086096ms | 1.57x  ✓
+test bench_concentrated_10m ... ok
+[L0 (8-bit range)] DEPTH TEST (1): 236.266267ms | Ref: 273.505958ms | 1.16x
+test bench_depth_1 ... ok
+[L1 (16-bit range)] DEPTH TEST (2): 298.027467ms | Ref: 525.738678ms | 1.76x
+test bench_depth_2 ... ok
+[L2 (24-bit range)] DEPTH TEST (3): 461.307216ms | Ref: 754.577274ms | 1.64x
+test bench_depth_3 ... ok
+[L3 (32-bit range)] DEPTH TEST (4): 424.130871ms | Ref: 714.713347ms | 1.69x
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI Auto: 418.232805ms | unstable: 813.95736ms | 1.95x  ✓
+test bench_full_u32_10m ... ok
+[Grouped 10M] SAPRI Auto: 464.777374ms | unstable: 816.437581ms | 1.76x  ✓
+test bench_grouped_10m ... ok
+[L0 counting 256v 10M] SAPRI Auto: 181.923657ms | unstable: 237.997504ms | 1.31x  ✓
+test bench_l0_256vals_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI Auto: 215.586403ms | unstable: 551.680559ms | 2.56x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 4-pass: 529.858644ms | 3-pass: 514.600107ms | -2.9%
+test bench_needed_passes_saving ... ok
+[Max90OnBlock 10M] SAPRI Auto: 344.316905ms | unstable: 572.004021ms | 1.66x  ✓
+test bench_max90_10m ... ok
+
+
+let use_adaptive = true
+
+[L3 (32-bit range)] SAPRI (depth=4): 432.561069ms | Ref: 768.683091ms | 1.78x  ✓
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI (depth=4): 436.758909ms | Ref: 729.818593ms | 1.67x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 474.900894ms | Ref: 846.800408ms | 1.78x  ✓
+test bench_full_u32_10m_old ... ok
+
+let use_adaptive = false;
+
+[L3 Full u32 10M] SAPRI (depth=4): 453.266997ms | Ref: 708.394504ms | 1.56x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 450.36109ms | Ref: 706.519043ms | 1.57x  ✓
+test bench_full_u32_10m_old ... ok
+
+
+[L0 (8-bit range)] SAPRI (depth=1): 44.138619ms | Ref: 285.736654ms | 6.47x  ✓
+test bench_depth_1 ... ok
+[Concentrated 10M] SAPRI (depth=4): 465.860959ms | Ref: 713.721997ms | 1.53x  ✓
+test bench_concentrated_10m ... ok
+[L1 (16-bit range)] SAPRI (depth=2): 64.793385ms | Ref: 529.56027ms | 8.17x  ✓
+test bench_depth_2 ... ok
+[L2 (24-bit range)] SAPRI (depth=3): 425.170295ms | Ref: 786.83907ms | 1.85x  ✓
+test bench_depth_3 ... ok
+[L3 (32-bit range)] SAPRI (depth=4): 468.776858ms | Ref: 711.244215ms | 1.52x  ✓
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI (depth=4): 427.78322ms | Ref: 885.591337ms | 2.07x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 527.573896ms | Ref: 846.551317ms | 1.60x  ✓
+test bench_full_u32_10m_old ... ok
+[L0 counting 256v 10M] SAPRI (depth=1): 46.116821ms | Ref: 291.78147ms | 6.33x  ✓
+test bench_l0_256vals_10m ... ok
+[Grouped 10M] SAPRI (depth=4): 574.735901ms | Ref: 822.995108ms | 1.43x  ✓
+test bench_grouped_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 67.567436ms | Ref: 488.71749ms | 7.23x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 3-pass: 378.371747ms | 4-pass: 444.077268ms | Guadagno: +14.8%
+test bench_passes_efficiency ... ok
+[Max90OnBlock 10M] SAPRI (depth=4): 354.797449ms | Ref: 596.098096ms | 1.68x  ✓
+test bench_max90_10m ... ok
+
+
+
+
+[L0 (8-bit range)] SAPRI (depth=1): 44.138619ms | Ref: 285.736654ms | 6.47x  ✓
+test bench_depth_1 ... ok
+[Concentrated 10M] SAPRI (depth=4): 465.860959ms | Ref: 713.721997ms | 1.53x  ✓
+test bench_concentrated_10m ... ok
+[L1 (16-bit range)] SAPRI (depth=2): 64.793385ms | Ref: 529.56027ms | 8.17x  ✓
+test bench_depth_2 ... ok
+[L2 (24-bit range)] SAPRI (depth=3): 425.170295ms | Ref: 786.83907ms | 1.85x  ✓
+test bench_depth_3 ... ok
+[L3 (32-bit range)] SAPRI (depth=4): 468.776858ms | Ref: 711.244215ms | 1.52x  ✓
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI (depth=4): 427.78322ms | Ref: 885.591337ms | 2.07x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 527.573896ms | Ref: 846.551317ms | 1.60x  ✓
+test bench_full_u32_10m_old ... ok
+[L0 counting 256v 10M] SAPRI (depth=1): 46.116821ms | Ref: 291.78147ms | 6.33x  ✓
+test bench_l0_256vals_10m ... ok
+[Grouped 10M] SAPRI (depth=4): 574.735901ms | Ref: 822.995108ms | 1.43x  ✓
+test bench_grouped_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 67.567436ms | Ref: 488.71749ms | 7.23x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 3-pass: 378.371747ms | 4-pass: 444.077268ms | Guadagno: +14.8%
+test bench_passes_efficiency ... ok
+[Max90OnBlock 10M] SAPRI (depth=4): 354.797449ms | Ref: 596.098096ms | 1.68x  ✓
+
+[L0 (8-bit range)] SAPRI (depth=1): 58.717765ms | Ref: 280.167306ms | 4.77x  ✓
+test bench_depth_1 ... ok
+[Concentrated 10M] SAPRI (depth=4): 458.496037ms | Ref: 684.083571ms | 1.49x  ✓
+test bench_concentrated_10m ... ok
+[L1 (16-bit range)] SAPRI (depth=2): 73.816328ms | Ref: 500.037861ms | 6.77x  ✓
+test bench_depth_2 ... ok
+[L2 (24-bit range)] SAPRI (depth=3): 472.802941ms | Ref: 716.403889ms | 1.52x  ✓
+test bench_depth_3 ... ok
+[L3 (32-bit range)] SAPRI (depth=4): 439.092837ms | Ref: 674.137176ms | 1.54x  ✓
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI (depth=4): 426.289909ms | Ref: 727.23965ms | 1.71x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 486.171449ms | Ref: 687.993669ms | 1.42x  ✓
+test bench_full_u32_10m_old ... ok
+[L0 counting 256v 10M] SAPRI (depth=1): 42.488183ms | Ref: 284.363547ms | 6.69x  ✓
+test bench_l0_256vals_10m ... ok
+[Grouped 10M] SAPRI (depth=4): 478.125522ms | Ref: 822.33967ms | 1.72x  ✓
+test bench_grouped_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 85.841357ms | Ref: 488.771034ms | 5.69x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 3-pass: 401.387499ms | 4-pass: 444.816731ms | Guadagno: +9.8%
+test bench_passes_efficiency ... ok
+[Max90OnBlock 10M] SAPRI (depth=4): 352.722987ms | Ref: 574.47627ms | 1.63x  ✓
+test bench_max90_10m ... ok
+
+
+[L0 (8-bit range)] SAPRI (depth=1): 62.472906ms | Ref: 309.16978ms | 4.95x  ✓
+test bench_depth_1 ... ok
+[Concentrated 10M] SAPRI (depth=4): 433.056821ms | Ref: 837.022154ms | 1.93x  ✓
+test bench_concentrated_10m ... ok
+[L1 (16-bit range)] SAPRI (depth=2): 276.700561ms | Ref: 529.112092ms | 1.91x  ✓
+test bench_depth_2 ... ok
+[L2 (24-bit range)] SAPRI (depth=3): 495.645719ms | Ref: 717.364876ms | 1.45x  ✓
+test bench_depth_3 ... ok
+[L3 (32-bit range)] SAPRI (depth=4): 489.77728ms | Ref: 762.049577ms | 1.56x  ✓
+test bench_depth_4 ... ok
+[L3 Full u32 10M] SAPRI (depth=4): 549.163656ms | Ref: 789.059433ms | 1.44x  ✓
+test bench_full_u32_10m ... ok
+[L3 Full old u32 10M] SAPRI (depth=4): 492.369998ms | Ref: 785.963496ms | 1.60x  ✓
+test bench_full_u32_10m_old ... ok
+[L0 counting 256v 10M] SAPRI (depth=1): 54.48685ms | Ref: 293.265611ms | 5.38x  ✓
+test bench_l0_256vals_10m ... ok
+[Grouped 10M] SAPRI (depth=4): 618.284192ms | Ref: 851.177601ms | 1.38x  ✓
+test bench_grouped_10m ... ok
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 214.103551ms | Ref: 497.678433ms | 2.32x  ✓
+test bench_l1_65k_10m ... ok
+Risparmio skipping passata: 3-pass: 421.571971ms | 4-pass: 426.036037ms | Guadagno: +1.0%
+test bench_passes_efficiency ... ok
+[Max90OnBlock 10M] SAPRI (depth=4): 353.845674ms | Ref: 577.352882ms | 1.63x  ✓
+test bench_max90_10m ... ok
+
+[L1 (16-bit range)] SAPRI (depth=2): 73.816328ms | Ref: 500.037861ms | 6.77x  ✓
+test bench_depth_2 ... ok
+
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 85.841357ms | Ref: 488.771034ms | 5.69x  ✓
+test bench_l1_65k_10m ... ok
+
+[L1 (16-bit range)] SAPRI (depth=2): 276.700561ms | Ref: 529.112092ms | 1.91x  ✓
+[L1 radix2pass 65K 10M] SAPRI (depth=2): 214.103551ms | Ref: 497.678433ms | 2.32x  ✓
