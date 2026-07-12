@@ -1,0 +1,99 @@
+ 8 bit 
+ 
+ 
+=======================================================================
+   SAPRI HYBRID ENGINE BENCHMARK SUITE - 32 vs 64 BIT MATRIX EVALUATION
+=======================================================================
+
+>>> [ MACRO BLOCK: 32-BIT DATA RANGE (max_val <= u32::MAX) ] <<<
+
+--- 32-bit Scenario | Strategy: Grouped ---
+  -> SAPRI (Hybrid 32-bit):   140.751789ms
+  -> Quicksort (Unstable):     122.509456ms
+  [✓] Accuracy verified.
+
+--- 32-bit Scenario | Strategy: Concentrated ---
+  -> SAPRI (Hybrid 32-bit):   116.283974ms
+  -> Quicksort (Unstable):     155.300037ms
+  [✓] Accuracy verified.
+
+--- 32-bit Scenario | Strategy: Max90OnBlock ---
+  -> SAPRI (Hybrid 32-bit):   129.907113ms
+  -> Quicksort (Unstable):     187.508359ms
+  [✓] Accuracy verified.
+
+-----------------------------------------------------------------------
+
+>>> [ MACRO BLOCK: 64-BIT DATA RANGE (max_val > u32::MAX) ] <<<
+
+--- 64-bit Scenario | Strategy: Grouped ---
+  -> SAPRI (Native 64-bit):   159.792588ms
+  -> Quicksort (Unstable):     131.606999ms
+  [✓] Accuracy verified.
+
+--- 64-bit Scenario | Strategy: Concentrated ---
+  -> SAPRI (Native 64-bit):   174.775593ms
+  -> Quicksort (Unstable):     160.432048ms
+  [✓] Accuracy verified.
+
+--- 64-bit Scenario | Strategy: Max90OnBlock ---
+  -> SAPRI (Native 64-bit):   147.525265ms
+  -> Quicksort (Unstable):     185.504225ms
+  [✓] Accuracy verified.
+
+=======================================================================
+test execute_full_hybrid_32_and_64_bit_benchmark ... ok
+
+
+16 bit
+
+running 1 test
+
+=======================================================================
+   SAPRI HYBRID ENGINE BENCHMARK SUITE - 32 vs 64 BIT MATRIX EVALUATION
+=======================================================================
+
+>>> [ MACRO BLOCK: 32-BIT DATA RANGE (max_val <= u32::MAX) ] <<<
+
+--- 32-bit Scenario | Strategy: Grouped ---
+  -> SAPRI (Hybrid 32-bit):   128.764136ms
+  -> Quicksort (Unstable):     120.877599ms
+  [✓] Accuracy verified.
+
+--- 32-bit Scenario | Strategy: Concentrated ---
+  -> SAPRI (Hybrid 32-bit):   97.31433ms
+  -> Quicksort (Unstable):     163.201265ms
+  [✓] Accuracy verified.
+
+--- 32-bit Scenario | Strategy: Max90OnBlock ---
+  -> SAPRI (Hybrid 32-bit):   112.674113ms
+  -> Quicksort (Unstable):     186.87791ms
+  [✓] Accuracy verified.
+
+-----------------------------------------------------------------------
+
+>>> [ MACRO BLOCK: 64-BIT DATA RANGE (max_val > u32::MAX) ] <<<
+
+--- 64-bit Scenario | Strategy: Grouped ---
+  -> SAPRI (Native 64-bit):   174.179144ms
+  -> Quicksort (Unstable):     122.578753ms
+  [✓] Accuracy verified.
+
+--- 64-bit Scenario | Strategy: Concentrated ---
+  -> SAPRI (Native 64-bit):   150.451615ms
+  -> Quicksort (Unstable):     152.344482ms
+  [✓] Accuracy verified.
+
+--- 64-bit Scenario | Strategy: Max90OnBlock ---
+  -> SAPRI (Native 64-bit):   156.941683ms
+  -> Quicksort (Unstable):     192.34572ms
+  [✓] Accuracy verified.
+
+=======================================================================
+test execute_full_hybrid_32_and_64_bit_benchmark ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.71s
+
+
+
+

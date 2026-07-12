@@ -26,7 +26,8 @@ pub enum SmallBucketStrategy {
 }
 
 /// The globally active sorting strategy optimized for mid-range leaf buckets.
-const ACTIVE_STRATEGY: SmallBucketStrategy = SmallBucketStrategy::Counting8;
+// const ACTIVE_STRATEGY: SmallBucketStrategy = SmallBucketStrategy::Counting8;
+const ACTIVE_STRATEGY: SmallBucketStrategy = SmallBucketStrategy::Counting16;
 
 // --- Isolated Helper Functions ---
 
