@@ -88,7 +88,7 @@ pub fn sapri_sort_parallel_max(data: &mut [u64], arena: &mut SapriParallelArena,
     if n < 2 { return; }
 
     if n < reorder_buckets_parallel::PARALLEL_THRESHOLD {
-        router(data);
+        router(data, 0 );
         return;
     }
 
@@ -128,7 +128,7 @@ pub fn sapri_filter_and_sort_parallel(
     }
     
     if valid_count > 1 {
-        router(&mut target_buffer[0..valid_count]);
+        router(&mut target_buffer[0..valid_count], 0);
     }
 
     valid_count
@@ -147,7 +147,7 @@ where
 
     // Ripristinato l'instradamento corretto
     if n <= 32 {
-        router(data);
+        router(data, 0);
         return;
     }
 
@@ -186,7 +186,7 @@ pub fn sapri_sort_stable(data: &mut [u64]) {
     let n = data.len();
     if n <= 1 { return; }
     if n <= 1024 {
-        (data);
+        router(data, 0);
         return;
     }
     data.sort(); 
