@@ -6,9 +6,17 @@ edition = "2021"
 [lib]
 path = "src/lib.rs"
 
-[[bin]]
-name = "sapriSortCli"
-path = "src/main.rs"
+[[test]]
+name = "bench_100m"
+path = "tests/bench_100m.rs"
+
+[[test]]
+name = "bench_max_bit"
+path = "tests/bench_max_bit.rs"
+
+[[test]]
+name = "bench_scalability"
+path = "tests/bench_scalability.rs"
 
 [[test]]
 name = "bench_sort"
@@ -25,8 +33,10 @@ codegen-units = 1
 panic = "abort"
 
 [dependencies]
-rand = { version = "0.8", features = ["std"] }
 rayon = "1.11.0"
+
+[dev-dependencies]
+rand = { version = "0.8", features = ["std"] }
 
 [features]
 default = ["threadsafe"]

@@ -1,0 +1,238 @@
+=======================================================================
+        SAPRI ENGINE - BIT-WINDOW RANGE ADAPTIVITY BENCHMARK
+=======================================================================
+Executing micro-benchmark matrix on fixed size: 10.000.000
+
+Window: Bits64   (Passes: 8) | SAPRI: 637.797177ms | Quicksort: 716.077015ms | [✓] Ok
+Window: Bits32   (Passes: 4) | SAPRI: 261.401303ms | Quicksort: 715.668783ms | [✓] Ok
+Window: Bits24   (Passes: 3) | SAPRI: 218.242737ms | Quicksort: 715.999407ms | [✓] Ok
+Window: Bits16   (Passes: 2) | SAPRI: 145.454859ms | Quicksort: 541.005815ms | [✓] Ok
+Window: Bits8    (Passes: 1) | SAPRI: 164.791823ms | Quicksort: 369.515505ms | [✓] Ok
+Window: Bits4    (Passes: 1) | SAPRI: 143.464077ms | Quicksort: 266.129673ms | [✓] Ok
+=======================================================================
+test execute_sapri_bit_matrix_benchmark ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.67s
+
+
+=======================================================================
+   SAPRI HYBRID ENGINE BENCHMARK SUITE - VERIFICA MATRICE 32 vs 64 BIT 
+=======================================================================
+
+>>> [MACRO BLOCCO: RANGE DATI A 32-BIT (max_val <= u32::MAX)] <<<
+
+--- Scenario 32-bit | Strategia: Grouped ---
+  -> SAPRI (Ibrido 32-bit):   271.630614ms
+  -> Quicksort (Unstable):     465.035893ms
+  [✓] Correttezza verificata.
+
+--- Scenario 32-bit | Strategia: Concentrated ---
+  -> SAPRI (Ibrido 32-bit):   268.428981ms
+  -> Quicksort (Unstable):     649.674315ms
+  [✓] Correttezza verificata.
+
+--- Scenario 32-bit | Strategia: Max90OnBlock ---
+  -> SAPRI (Ibrido 32-bit):   260.52097ms
+  -> Quicksort (Unstable):     705.364257ms
+  [✓] Correttezza verificata.
+
+-----------------------------------------------------------------------
+
+>>> [MACRO BLOCCO: RANGE DATI A 64-BIT (max_val > u32::MAX)] <<<
+
+--- Scenario 64-bit | Strategia: Grouped ---
+  -> SAPRI (Nativo 64-bit):   458.433499ms
+  -> Quicksort (Unstable):     471.270746ms
+  [✓] Correttezza verificata.
+
+--- Scenario 64-bit | Strategia: Concentrated ---
+  -> SAPRI (Nativo 64-bit):   455.161326ms
+  -> Quicksort (Unstable):     641.585673ms
+  [✓] Correttezza verificata.
+
+--- Scenario 64-bit | Strategia: Max90OnBlock ---
+  -> SAPRI (Nativo 64-bit):   455.228993ms
+  -> Quicksort (Unstable):     706.223288ms
+  [✓] Correttezza verificata.
+
+=======================================================================
+test esegui_benchmark_completo_ibrido_32_e_64_bit ... ok
+
+
+=======================================================================
+        SAPRI ENGINE - ADAPTIVE SCALABILITY BENCHMARK SUITE
+=======================================================================
+
+>>> [ TARGET TEST STRATEGY: PureRandom ] <<<
+Size: 1          | SAPRI: 6.356µs      | Quicksort: 7.892µs      | [✓] Ok
+Size: 15         | SAPRI: 2.305µs      | Quicksort: 2.165µs      | [✓] Ok
+Size: 100        | SAPRI: 5.378µs      | Quicksort: 3.632µs      | [✓] Ok
+Size: 1.000      | SAPRI: 30.661µs     | Quicksort: 29.194µs     | [✓] Ok
+Size: 10.000     | SAPRI: 323.927µs    | Quicksort: 362.829µs    | [✓] Ok
+Size: 100.000    | SAPRI: 3.988538ms   | Quicksort: 4.044622ms   | [✓] Ok
+Size: 1.000.000  | SAPRI: 50.752457ms  | Quicksort: 51.805256ms  | [✓] Ok
+Size: 10.000.000 | SAPRI: 647.991419ms | Quicksort: 732.155953ms | [✓] Ok
+-----------------------------------------------------------------------
+
+>>> [ TARGET TEST STRATEGY: Concentrated ] <<<
+Size: 1          | SAPRI: 1.886µs      | Quicksort: 1.886µs      | [✓] Ok
+Size: 15         | SAPRI: 2.304µs      | Quicksort: 2.445µs      | [✓] Ok
+Size: 100        | SAPRI: 6.285µs      | Quicksort: 3.911µs      | [✓] Ok
+Size: 1.000      | SAPRI: 30.94µs      | Quicksort: 29.193µs     | [✓] Ok
+Size: 10.000     | SAPRI: 336.569µs    | Quicksort: 323.159µs    | [✓] Ok
+Size: 100.000    | SAPRI: 3.907102ms   | Quicksort: 3.876163ms   | [✓] Ok
+Size: 1.000.000  | SAPRI: 36.260096ms  | Quicksort: 37.41668ms   | [✓] Ok
+Size: 10.000.000 | SAPRI: 432.00005ms  | Quicksort: 562.547233ms | [✓] Ok
+-----------------------------------------------------------------------
+
+>>> [ TARGET TEST STRATEGY: Grouped ] <<<
+Size: 1          | SAPRI: 1.955µs      | Quicksort: 2.025µs      | [✓] Ok
+Size: 15         | SAPRI: 2.375µs      | Quicksort: 2.723µs      | [✓] Ok
+Size: 100        | SAPRI: 6.635µs      | Quicksort: 4.261µs      | [✓] Ok
+Size: 1.000      | SAPRI: 13.759µs     | Quicksort: 13.48µs      | [✓] Ok
+Size: 10.000     | SAPRI: 227.894µs    | Quicksort: 196.187µs    | [✓] Ok
+Size: 100.000    | SAPRI: 2.722093ms   | Quicksort: 2.621172ms   | [✓] Ok
+Size: 1.000.000  | SAPRI: 36.892026ms  | Quicksort: 38.34055ms   | [✓] Ok
+Size: 10.000.000 | SAPRI: 778.139515ms | Quicksort: 584.268377ms | [✓] Ok
+-----------------------------------------------------------------------
+
+>>> [ TARGET TEST STRATEGY: Max90OnBlock ] <<<
+Size: 1          | SAPRI: 2.654µs      | Quicksort: 1.816µs      | [✓] Ok
+Size: 15         | SAPRI: 2.304µs      | Quicksort: 2.445µs      | [✓] Ok
+Size: 100        | SAPRI: 6.285µs      | Quicksort: 3.911µs      | [✓] Ok
+Size: 1.000      | SAPRI: 30.801µs     | Quicksort: 29.334µs     | [✓] Ok
+Size: 10.000     | SAPRI: 365.553µs    | Quicksort: 324.067µs    | [✓] Ok
+Size: 100.000    | SAPRI: 4.015358ms   | Quicksort: 4.167544ms   | [✓] Ok
+Size: 1.000.000  | SAPRI: 48.978049ms  | Quicksort: 50.042233ms  | [✓] Ok
+Size: 10.000.000 | SAPRI: 645.701282ms | Quicksort: 598.358303ms | [✓] Ok
+-----------------------------------------------------------------------
+=======================================================================
+
+
+################################################################################################################
+NEW test
+################################################################################################################
+
+
+=======================================================================
+        SAPRI ENGINE - ADAPTIVE SCALABILITY BENCHMARK SUITE
+=======================================================================
+
+>>> [ TARGET TEST STRATEGY: PureRandom ] <<<
+Size: 1          | SAPRI: 2.026µs      | Quicksort: 1.816µs      | [✓] Success
+Size: 15         | SAPRI: 2.165µs      | Quicksort: 2.235µs      | [✓] Success
+Size: 100        | SAPRI: 5.238µs      | Quicksort: 4.121µs      | [✓] Success
+Size: 1,000      | SAPRI: 31.08µs      | Quicksort: 29.822µs     | [✓] Success
+Size: 10,000     | SAPRI: 322.6µs      | Quicksort: 319.737µs    | [✓] Success
+Size: 100,000    | SAPRI: 4.575281ms   | Quicksort: 4.18668ms    | [✓] Success
+Size: 1,000,000  | SAPRI: 53.523434ms  | Quicksort: 53.490957ms  | [✓] Success
+Size: 10,000,000 | SAPRI: 768.529401ms | Quicksort: 758.288052ms | [✓] Success
+-----------------------------------------------------------------------
+
+>>> [ TARGET TEST STRATEGY: Concentrated ] <<<
+Size: 1          | SAPRI: 2.444µs      | Quicksort: 1.816µs      | [✓] Success
+Size: 15         | SAPRI: 2.305µs      | Quicksort: 2.445µs      | [✓] Success
+Size: 100        | SAPRI: 6.286µs      | Quicksort: 3.981µs      | [✓] Success
+Size: 1,000      | SAPRI: 30.73µs      | Quicksort: 29.683µs     | [✓] Success
+Size: 10,000     | SAPRI: 360.943µs    | Quicksort: 322.391µs    | [✓] Success
+Size: 100,000    | SAPRI: 3.929871ms   | Quicksort: 4.236058ms   | [✓] Success
+Size: 1,000,000  | SAPRI: 40.664052ms  | Quicksort: 36.227966ms  | [✓] Success
+Size: 10,000,000 | SAPRI: 451.696243ms | Quicksort: 510.62671ms  | [✓] Success
+-----------------------------------------------------------------------
+
+>>> [ TARGET TEST STRATEGY: Grouped ] <<<
+Size: 1          | SAPRI: 1.746µs      | Quicksort: 1.816µs      | [✓] Success
+Size: 15         | SAPRI: 2.096µs      | Quicksort: 2.445µs      | [✓] Success
+Size: 100        | SAPRI: 5.657µs      | Quicksort: 3.841µs      | [✓] Success
+Size: 1,000      | SAPRI: 13.619µs     | Quicksort: 13.2µs       | [✓] Success
+Size: 10,000     | SAPRI: 185.501µs    | Quicksort: 167.9µs      | [✓] Success
+Size: 100,000    | SAPRI: 2.448452ms   | Quicksort: 2.410388ms   | [✓] Success
+Size: 1,000,000  | SAPRI: 37.923452ms  | Quicksort: 37.226708ms  | [✓] Success
+Size: 10,000,000 | SAPRI: 692.461203ms | Quicksort: 602.594008ms | [✓] Success
+-----------------------------------------------------------------------
+
+>>> [ TARGET TEST STRATEGY: Max90OnBlock ] <<<
+Size: 1          | SAPRI: 2.794µs      | Quicksort: 1.886µs      | [✓] Success
+Size: 15         | SAPRI: 2.375µs      | Quicksort: 2.724µs      | [✓] Success
+Size: 100        | SAPRI: 7.333µs      | Quicksort: 3.911µs      | [✓] Success
+Size: 1,000      | SAPRI: 30.731µs     | Quicksort: 28.915µs     | [✓] Success
+Size: 10,000     | SAPRI: 359.268µs    | Quicksort: 372.118µs    | [✓] Success
+Size: 100,000    | SAPRI: 4.815538ms   | Quicksort: 4.199321ms   | [✓] Success
+Size: 1,000,000  | SAPRI: 49.546423ms  | Quicksort: 50.899403ms  | [✓] Success
+Size: 10,000,000 | SAPRI: 693.218659ms | Quicksort: 596.744056ms | [✓] Success
+-----------------------------------------------------------------------
+=======================================================================
+
+
+=======================================================================
+   SAPRI PARALLEL ENGINE - 100M ZERO-ALLOCATION MATRIX BENCHMARK
+=======================================================================
+Pre-allocating and warming up Parallel Arena (800 MB)...
+
+Allocating data vector for Concentrated (800 MB)...
+Data generation completed. Cloning array for Quicksort baseline...
+
+Running PARALLEL benchmark for strategy: Concentrated
+-----------------------------------------------------------------------
+-> SAPRI (Zero-Alloc Parallel): 9.533407083s
+-> Quicksort (Standard Unstable): 12.062147469s
+Validating sort accuracy... [✓] Success (Data Integrity Verified)
+-----------------------------------------------------------------------
+=======================================================================
+
+=======================================================================
+        SAPRI ENGINE - BIT-WINDOW RANGE ADAPTIVITY BENCHMARK
+=======================================================================
+Executing micro-benchmark matrix on fixed size: 10,000,000
+
+Window: Bits64   (Passes: 8) | SAPRI: 646.595404ms | Quicksort: 717.541241ms | [✓] Success
+Window: Bits32   (Passes: 4) | SAPRI: 262.695371ms | Quicksort: 720.21418ms  | [✓] Success
+Window: Bits24   (Passes: 3) | SAPRI: 220.885705ms | Quicksort: 717.755533ms | [✓] Success
+Window: Bits16   (Passes: 2) | SAPRI: 162.89568ms  | Quicksort: 544.584946ms | [✓] Success
+Window: Bits8    (Passes: 1) | SAPRI: 166.792111ms | Quicksort: 372.615291ms | [✓] Success
+Window: Bits4    (Passes: 1) | SAPRI: 144.155609ms | Quicksort: 270.693298ms | [✓] Success
+=======================================================================
+
+=======================================================================
+   SAPRI HYBRID ENGINE BENCHMARK SUITE - 32 vs 64 BIT MATRIX EVALUATION
+=======================================================================
+
+>>> [ MACRO BLOCK: 32-BIT DATA RANGE (max_val <= u32::MAX) ] <<<
+
+--- 32-bit Scenario | Strategy: Grouped ---
+  -> SAPRI (Hybrid 32-bit):   322.903126ms
+  -> Quicksort (Unstable):     481.52213ms
+  [✓] Accuracy verified.
+
+--- 32-bit Scenario | Strategy: Concentrated ---
+  -> SAPRI (Hybrid 32-bit):   282.974055ms
+  -> Quicksort (Unstable):     663.467292ms
+  [✓] Accuracy verified.
+
+--- 32-bit Scenario | Strategy: Max90OnBlock ---
+  -> SAPRI (Hybrid 32-bit):   452.299059ms
+  -> Quicksort (Unstable):     781.510637ms
+  [✓] Accuracy verified.
+
+-----------------------------------------------------------------------
+
+>>> [ MACRO BLOCK: 64-BIT DATA RANGE (max_val > u32::MAX) ] <<<
+
+--- 64-bit Scenario | Strategy: Grouped ---
+  -> SAPRI (Native 64-bit):   496.254061ms
+  -> Quicksort (Unstable):     508.068314ms
+  [✓] Accuracy verified.
+
+--- 64-bit Scenario | Strategy: Concentrated ---
+  -> SAPRI (Native 64-bit):   506.86214ms
+  -> Quicksort (Unstable):     702.059193ms
+  [✓] Accuracy verified.
+
+--- 64-bit Scenario | Strategy: Max90OnBlock ---
+  -> SAPRI (Native 64-bit):   519.373358ms
+  -> Quicksort (Unstable):     728.519537ms
+  [✓] Accuracy verified.
+
+=======================================================================
+
+
