@@ -419,23 +419,32 @@ fn scatter_parallel_u64_to_u64(src: &[u64], smap: &ScatterMap, dst: &mut [u64], 
 
 /// **PARALLEL SORT DRIVER**: High-speed entry point leveraging an external arena workspace.
 ///
-/// Dynamically measures data distribution ranges using light statistical sampling 
-/// to adjust routing steps and enforce zero dynamic allocations.
-pub fn sapri_sort_parallel_in_arena(data: &mut [u64], passes: usize, arena: &mut SapriParallelArena) {
+/// Deterministically measures global data distribution bounds using precise full-scan parallel
+/// aggregation to adjust processing radix steps and enforce zero runtime heap allocations.
+pub fn sapri_sort_parallel_in_arena(data: &mut [u64], _passes: usize, arena: &mut SapriParallelArena) {
     let n = data.len();
     if n < 2 { return; }
 
-    let mut sample_min = u64::MAX;
-    let mut sample_max = 0;
-    let sample_limit = n.min(8);
-    for i in 0..sample_limit {
-        let v = data[i];
-        if v < sample_min { sample_min = v; }
-        if v > sample_max { sample_max = v; }
-    }
-    let estimated_range = sample_max.saturating_sub(sample_min);
+    // Accurate high-performance parallel min/max reduction to resolve true data range
+    let (global_min, global_max) = data.par_chunks(CHUNK_SIZE)
+        .map(|chunk| {
+            let mut l_min = chunk[0];
+            let mut l_max = chunk[0];
+            for &v in chunk.iter().skip(1) {
+                if v < l_min { l_min = v; }
+                if v > l_max { l_max = v; }
+            }
+            (l_min, l_max)
+        })
+        .reduce(
+            || (u64::MAX, 0u64),
+            |(a_min, a_max), (b_min, b_max)| (a_min.min(b_min), a_max.max(b_max))
+        );
 
-    let required_bits = 64 - estimated_range.leading_zeros();
+    if global_min == global_max { return; }
+    let estimated_range = global_max.saturating_sub(global_min);
+
+    let required_bits = 64 - estimated_range.leading_zeros() as usize;
     let dynamic_threshold = match required_bits {
         0..=8   => 800_000,   
         9..=16  => 1_800_000, 
@@ -448,13 +457,21 @@ pub fn sapri_sort_parallel_in_arena(data: &mut [u64], passes: usize, arena: &mut
         return;
     }
 
-    if estimated_range > 0 && (n as u64) / estimated_range > 500 {
+    if (n as u64) / estimated_range > 500 {
         data.sort_unstable();
         return;
     }
 
+    // Compute effective radix sorting passes required by the real bit width
+    let actual_passes = (required_bits + 7) / 8;
     let (scratch_a, scratch_b, scratch_u64) = arena.get_buffers_mut(n);
-    sapri_radix_32bit_parallel_engine(data, passes, scratch_a, scratch_b, scratch_u64);
+
+    // Dynamic state routing based on global upper boundaries
+    if global_max <= u32::MAX as u64 {
+        sapri_radix_32bit_parallel_engine(data, actual_passes, scratch_a, scratch_b, scratch_u64);
+    } else {
+        sapri_radix_64bit_parallel_engine(data, actual_passes, scratch_u64);
+    }
 }
 
 /// Performs a concurrent linear map upcasting elements from 32-bit workspace slices back into 64-bit records.

@@ -15,13 +15,21 @@ pub mod reorder_buckets;
 /// Parallel multi-core sorting engines utilizing thread pools and chunked streaming.
 pub mod reorder_buckets_parallel;
 
-/// Branchless grid network sorting engine optimized for micro-arrays.
-// pub mod grid_sort;
+/// Adaptive router managing layout density matrices and small slice accelerators.
 pub mod router;
 
-// Re-export delle funzioni e degli inizializzatori principali
+// --- Re-exports and Thread Pool Initialization ---
+
 pub use reorder_buckets_parallel::init_parallel_engine;
-pub use router::router;
+pub use router::{router, BitTopology, ThreadScratchpad};
+
+use std::cell::RefCell;
+use thread_local::ThreadLocal;
+
+lazy_static::lazy_static! {
+    /// Global persistent thread-local storage pooling scratchpads across thread counts.
+    static ref GLOBAL_SCRATCH_POOL: ThreadLocal<RefCell<ThreadScratchpad>> = ThreadLocal::new();
+}
 
 // --- Public API & Memory Arena Structure ---
 
@@ -75,20 +83,20 @@ impl SapriParallelArena {
 // --- Primary Sort Dispatchers (The Switch Layer) ---
 
 /// Executes an unstable parallel radix sort using an external arena, automatically scanning the sequence for the maximum bound.
-pub fn sapri_sort_parallel_in_arena(data: &mut [u64], arena: &mut SapriParallelArena) {
+pub fn sapri_sort_parallel_in_arena(data: &mut [u64], arena: &mut SapriParallelArena, topology: BitTopology) {
     if data.len() < 2 { return; }
     use rayon::prelude::*;
     let exact_max = data.par_iter().max().cloned().unwrap_or(0);
-    sapri_sort_parallel_max(data, arena, exact_max);
+    sapri_sort_parallel_max(data, arena, exact_max, topology);
 }
 
 /// Executes an unstable parallel radix sort using an explicit maximum value to completely bypass initialization scans.
-pub fn sapri_sort_parallel_max(data: &mut [u64], arena: &mut SapriParallelArena, max_val: u64) {
+pub fn sapri_sort_parallel_max(data: &mut [u64], arena: &mut SapriParallelArena, max_val: u64, topology: BitTopology) {
     let n = data.len();
     if n < 2 { return; }
 
     if n < reorder_buckets_parallel::PARALLEL_THRESHOLD {
-        router(data, 0 );
+        router(data, 0, topology, &GLOBAL_SCRATCH_POOL);
         return;
     }
 
@@ -115,6 +123,7 @@ pub fn sapri_filter_and_sort_parallel(
     _arena: &mut SapriParallelArena,
     min_bound: u64,
     max_bound: u64,
+    topology: BitTopology,
 ) -> usize {
     let n = data.len();
     if n == 0 || min_bound > max_bound { return 0; }
@@ -128,7 +137,7 @@ pub fn sapri_filter_and_sort_parallel(
     }
     
     if valid_count > 1 {
-        router(&mut target_buffer[0..valid_count], 0);
+        router(&mut target_buffer[0..valid_count], 0, topology, &GLOBAL_SCRATCH_POOL);
     }
 
     valid_count
@@ -138,16 +147,15 @@ pub fn sapri_filter_and_sort_parallel(
 
 /// Centralized micro-routing wrapper to safely capture small workloads using branchless primitives.
 #[inline(always)]
-fn run_with_threshold_checks<F>(data: &mut [u64], fallback_radix_path: F)
+fn run_with_threshold_checks<F>(data: &mut [u64], topology: BitTopology, fallback_radix_path: F)
 where
     F: FnOnce(&mut [u64], usize),
 {
     let n = data.len();
     if n <= 1 { return; }
 
-    // Ripristinato l'instradamento corretto
     if n <= 32 {
-        router(data, 0);
+        router(data, 0, topology, &GLOBAL_SCRATCH_POOL);
         return;
     }
 
@@ -160,54 +168,61 @@ where
 }
 
 /// Performs an unstable hybrid sort, isolating tiny datasets inside the grid engine.
-pub fn sapri_sort_unstable(data: &mut [u64]) {
-    run_with_threshold_checks(data, |slice, n| {
+pub fn sapri_sort_unstable(data: &mut [u64], topology: BitTopology) {
+    run_with_threshold_checks(data, topology, |slice, n| {
         let mut arena = SapriParallelArena::with_capacity(n);
-        sapri_sort_parallel_in_arena(slice, &mut arena);
+        sapri_sort_parallel_in_arena(slice, &mut arena, topology);
     });
 }
 
 /// Performs an unstable hybrid sort with a predefined maximum value limit.
-pub fn sapri_sort_unstable_max(data: &mut [u64], max_val: u64) {
-    run_with_threshold_checks(data, |slice, n| {
+pub fn sapri_sort_unstable_max(data: &mut [u64], max_val: u64, topology: BitTopology) {
+    run_with_threshold_checks(data, topology, |slice, n| {
         let mut arena = SapriParallelArena::with_capacity(n);
-        sapri_sort_parallel_max(slice, &mut arena, max_val);
+        sapri_sort_parallel_max(slice, &mut arena, max_val, topology);
     });
 }
 
 /// Performs an unstable hybrid sort with explicit lower and upper boundaries.
-pub fn sapri_sort_unstable_min_max(data: &mut [u64], min_val: u64, max_val: u64) {
+pub fn sapri_sort_unstable_min_max(data: &mut [u64], min_val: u64, max_val: u64, topology: BitTopology) {
     let _ = min_val; 
-    sapri_sort_unstable_max(data, max_val);
-}
-
-/// Performs a stable sort operation fallback on matching elements.
-pub fn sapri_sort_stable(data: &mut [u64]) {
-    let n = data.len();
-    if n <= 1 { return; }
-    if n <= 1024 {
-        router(data, 0);
-        return;
-    }
-    data.sort(); 
+    sapri_sort_unstable_max(data, max_val, topology);
 }
 
 // --- High-Level Shorthand Aliases (Exposed Frontend) ---
-
-/// Standard exposed shorthand wrapper executing unstable parallel sorts.
+/// Standard exposed shorthand wrapper executing unstable parallel sorts with an explicit bit topology.
 #[inline(always)]
 pub fn sapri_sort(data: &mut [u64]) {
-    sapri_sort_unstable(data);
+    sapri_sort_unstable(data, BitTopology::Adaptive);
 }
 
-/// Standard exposed shorthand wrapper executing bounded max sorts.
+/// Standard exposed shorthand wrapper executing bounded max sorts with an explicit bit topology.
 #[inline(always)]
 pub fn sapri_sort_max(data: &mut [u64], max_val: u64) {
-    sapri_sort_unstable_max(data, max_val);
+    sapri_sort_unstable_max(data, max_val, BitTopology::Adaptive);
 }
 
-/// Standard exposed shorthand wrapper executing bounded min-max range sorts.
+/// Standard exposed shorthand wrapper executing bounded min-max range sorts with an explicit bit topology.
 #[inline(always)]
 pub fn sapri_sort_min_max(data: &mut [u64], min_val: u64, max_val: u64) {
-    sapri_sort_unstable_min_max(data, min_val, max_val);
+    sapri_sort_unstable_min_max(data, min_val, max_val, BitTopology::Adaptive);
+}
+
+
+/// Standard exposed shorthand wrapper executing unstable parallel sorts with an explicit bit topology.
+#[inline(always)]
+pub fn sapri_sort_topo(data: &mut [u64], topology: BitTopology) {
+    sapri_sort_unstable(data, topology);
+}
+
+/// Standard exposed shorthand wrapper executing bounded max sorts with an explicit bit topology.
+#[inline(always)]
+pub fn sapri_sort_max_topo(data: &mut [u64], max_val: u64, topology: BitTopology) {
+    sapri_sort_unstable_max(data, max_val, topology);
+}
+
+/// Standard exposed shorthand wrapper executing bounded min-max range sorts with an explicit bit topology.
+#[inline(always)]
+pub fn sapri_sort_min_max_topo(data: &mut [u64], min_val: u64, max_val: u64, topology: BitTopology) {
+    sapri_sort_unstable_min_max(data, min_val, max_val, topology);
 }

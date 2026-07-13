@@ -34,6 +34,8 @@ panic = "abort"
 
 [dependencies]
 rayon = "1.11.0"
+thread_local = "1.1"
+lazy_static = "1.4"
 
 [dev-dependencies]
 rand = { version = "0.8", features = ["std"] }
