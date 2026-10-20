@@ -1,7 +1,6 @@
 # SAPRI Sorting Engine
 
 [![Crates.io](https://img.shields.io/crates/v/sapri.svg)](https://crates.io/crates/sapri)
-[![Documentation](https://github.com/SapriZero/sapriSort/README.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
