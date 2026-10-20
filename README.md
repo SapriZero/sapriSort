@@ -304,8 +304,6 @@ where
 3. *Specialized 16-bit Counting Sort:* Dispatches to `sapri_sort_16` if $\max \le 65,535$ and $N \ge 5,000$.
 4. *Parallel Threshold Check:* Falls back to standard library sort if $N < \text{PARALLEL\_THRESHOLD}$, otherwise executes the parallel radix engine.
 
-
-
 #### `sapri_sort_unstable` / `sapri_sort_unstable_max` / `sapri_sort_unstable_min_max`
 
 ```rust
