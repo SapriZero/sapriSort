@@ -69,7 +69,7 @@ The **MSD** approach processes data starting from the most significant digit, re
 
 ---
 
-# BENCHMARK
+## BENCHMARK
 
 ## 32-bit vs 64-bit Hybrid Engine Benchmark Matrix
 
