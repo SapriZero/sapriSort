@@ -1,6 +1,22 @@
 # SAPRI Sorting Engine
 
+[![Crates.io](https://img.shields.io/crates/v/sapri.svg)](https://crates.io/crates/sapri)
+[![Documentation](https://github.com/SapriZero/sapriSort/README.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
 **SAPRI** is an enterprise-grade, high-performance hybrid sorting library engineered for modern multi-core architectures in Rust. It provides a zero-overhead interface that dynamically routes sorting tasks to the most efficient engine based on workload cardinality, numerical value bounds, and hardware concurrency.
+
+---
+
+## Installation
+
+Add this to your `Cargo.toml`:
+
+```toml
+[dependencies]
+sapri = "0.1" # o la versione corrente
 
 ---
 
@@ -350,3 +366,9 @@ To bridge unsigned radix requirements with signed datasets, SAPRI implements bia
 * **`sapri_sort_i64(data: &mut [i64])`**: Executes an unstable adaptive sort over a signed `i64` dataset using default topology.
 * **`sapri_sort_i64_topo(data: &mut [i64], topology: BitTopology)`**: Executes an adaptive sort over signed datasets with explicit topology.
 * **`sapri_sort_i64_range(data: &mut [i64], min_val: i64, max_val: i64, topology: BitTopology)`**: Optimizes signed sorting by mapping values into an unsigned domain via wrapping shifts (`wrapping_add(i64::MIN)`), sorting via the parallel radix engine, and reversing the bias upon completion.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
