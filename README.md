@@ -299,10 +299,10 @@ where
 ```
 
 * **Description:** Centralized micro-routing wrapper. Intercepts incoming workloads to execute hardware threshold evaluations and domain routing:
-1. *Micro-arrays ($N \le 32$):* Dispatches directly to standard unstable sort to eliminate dispatch overhead.
+1. *Micro-arrays ($N \le 32$):* Dispatches directly to standard unstable sort to dispatch overhead.
 2. *Specialized 8-bit Counting Sort:* Dispatches to `sapri_sort_8` if $\max \le 255$ and $N \ge 2,000$.
 3. *Specialized 16-bit Counting Sort:* Dispatches to `sapri_sort_16` if $\max \le 65,535$ and $N \ge 5,000$.
-4. *Parallel Threshold Check:* Falls back to standard library sort if $N < \text{PARALLEL\_THRESHOLD}$, otherwise executes the parallel radix engine.
+4. *Parallel Threshold Check:* Falls back to standard library sort if the dataset is too small, otherwise executes the parallel radix engine.
 
 #### `sapri_sort_unstable` / `sapri_sort_unstable_max` / `sapri_sort_unstable_min_max`
 
