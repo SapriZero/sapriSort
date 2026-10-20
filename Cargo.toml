@@ -1,0 +1,45 @@
+[package]
+name = "sapri_sort"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[[test]]
+name = "bench_100m"
+path = "tests/bench_100m.rs"
+
+[[test]]
+name = "bench_max_bit"
+path = "tests/bench_max_bit.rs"
+
+[[test]]
+name = "bench_scalability"
+path = "tests/bench_scalability.rs"
+
+[[test]]
+name = "bench_sort"
+path = "tests/bench_sort.rs"
+
+[[test]]
+name = "correctness"
+path = "tests/correctness.rs"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[dependencies]
+rayon = "1.11.0"
+thread_local = "1.1"
+lazy_static = "1.4"
+
+[dev-dependencies]
+rand = { version = "0.8", features = ["std"] }
+
+[features]
+default = ["threadsafe"]
+threadsafe = []

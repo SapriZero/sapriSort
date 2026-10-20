@@ -1,0 +1,59 @@
+# --- Rust Build & Cargo Artifacts ---
+/target/
+Cargo.lock
+
+# --- IDE & Editor Configurations ---
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains IDEs (IntelliJ, RustRover, CLion, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Vim / Emacs
+*~
+*.swp
+*.swo
+.netrwhist
+.#*
+
+# --- Operating System Generated Files ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# --- Compressed Archives & Temporary Files ---
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bak
+*.tmp
+*.temp
+
+# --- Benchmark & Profiling Output Artifacts ---
+*.perf
+*.svg
+target/criterion/
+bench_output/
+*.csv
