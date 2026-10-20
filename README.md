@@ -115,7 +115,7 @@ This benchmark suite demonstrates why SAPRI is a true **hybrid engine**: it achi
   [✓] Accuracy verified.
 
 =======================================================================
-
+---
 
 ## Specialized Domain Benchmarks: 8-bit & 16-bit Engines
 
@@ -205,7 +205,7 @@ Size: 10000000
 
 ---
 
-# SAPRI API Reference Guide
+## SAPRI API Reference Guide
 
 This document provides a comprehensive overview of the public interface exposed by the **SAPRI** sorting library, covering core runtime configuration, memory arenas, dynamic threshold routing, high-level sorting shorthands, and specialized signed-type extensions.
 
