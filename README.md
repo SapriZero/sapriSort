@@ -369,3 +369,5 @@ To bridge unsigned radix requirements with signed datasets, SAPRI implements bia
 ## License
 
 This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+
+[![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Donate%20a%20Coffee-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/saprizero)
