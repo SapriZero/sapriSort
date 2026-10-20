@@ -61,37 +61,43 @@ The **MSD** approach processes data starting from the most significant digit, re
 This evaluation matrix contrasts SAPRI's hybrid sorting engine against Rust's native unstable Quicksort across two distinct numerical domains (`u32` vs `u64`) under three workload distribution strategies: **Grouped**, **Concentrated**, and **Max90OnBlock**.
 
 ### 1. Macro Block: 32-bit Data Range ($\max \le \text{u32::MAX}$) — **The Domain of Dominance**
+
 Across the entire 32-bit block, **SAPRI dominates decisively**, outperforming standard Quicksort across all distribution strategies with significant speedups:
+
 * **Grouped & Concentrated:** The hybrid architecture leverages reduced radix passes and optimized 32-bit bucketization, comfortably beating Quicksort ($\sim 361\text{ ms}$ vs $\sim 533\text{ ms}$).
 * **Max90OnBlock:** SAPRI reaches peak performance ($308\text{ ms}$ vs $745\text{ ms}$), highlighting how block structuring and intelligent key handling align seamlessly with partially clustered distributions.
 
 ### 2. Macro Block: 64-bit Data Range ($\max > \text{u32::MAX}$) — **The Full-Range Entropy Trade-off**
+
 In the 64-bit domain, the results highlight the structural limits of radix sorting on full-entropy 64-bit integers:
-* **Where it loses (Max90OnBlock & Grouped):** On full-range 64-bit integers with high entropy, SAPRI (Native 64-bit) aligns with or slightly trails native Quicksort ($\sim 751.9\text{ ms}$ vs $\sim 751.4\text{ ms}$). 
+
+* **Where it loses (Max90OnBlock & Grouped):** On full-range 64-bit integers with high entropy, SAPRI (Native 64-bit) aligns with or slightly trails native Quicksort ($\sim 751.9\text{ ms}$ vs $\sim 751.4\text{ ms}$).
 * **Technical Rationale:** A 64-bit integer requires significantly more passes (or massive, sparse buckets) to complete a radix sort, placing heavy pressure on CPU cache and memory bandwidth. When entropy is maximal and the value space is vast, comparison-based Quicksort (scaling as $O(N \log N)$ without fixed digit-pass overhead) regains competitiveness.
 * **Where it still wins (Concentrated):** Even at 64-bit scale, if data exhibits concentration or favorable patterns (`Concentrated`), SAPRI's native engine still pulls ahead ($\sim 534.9\text{ ms}$ vs $\sim 692.2\text{ ms}$), proving that bucketization maintains advantages as long as dispersion does not saturate the address space.
 
 ### Architectural Conclusion
+
 This benchmark suite demonstrates why SAPRI is a true **hybrid engine**: it achieves extraordinary performance on bounded and 32-bit domains (where linear counting/radix sort shines), while relying on intelligent router thresholds and fallback strategies to handle large-scale, high-entropy 64-bit data effectively.
 
----
+```text
+=======================================================================
    SAPRI HYBRID ENGINE BENCHMARK SUITE - 32 vs 64 BIT MATRIX EVALUATION
----
+=======================================================================
 
 >>> [ MACRO BLOCK: 32-BIT DATA RANGE (max_val <= u32::MAX) ] <<<
 
 --- 32-bit Scenario | Strategy: Grouped ---
-  -> SAPRI (Hybrid 32-bit):   361.267122ms
+  -> SAPRI (Hybrid 32-bit):    361.267122ms
   -> Quicksort (Unstable):     533.453669ms
   [✓] Accuracy verified.
 
 --- 32-bit Scenario | Strategy: Concentrated ---
-  -> SAPRI (Hybrid 32-bit):   464.296895ms
+  -> SAPRI (Hybrid 32-bit):    464.296895ms
   -> Quicksort (Unstable):     801.675228ms
   [✓] Accuracy verified.
 
 --- 32-bit Scenario | Strategy: Max90OnBlock ---
-  -> SAPRI (Hybrid 32-bit):   308.304715ms
+  -> SAPRI (Hybrid 32-bit):    308.304715ms
   -> Quicksort (Unstable):     745.460237ms
   [✓] Accuracy verified.
 
@@ -100,21 +106,24 @@ This benchmark suite demonstrates why SAPRI is a true **hybrid engine**: it achi
 >>> [ MACRO BLOCK: 64-BIT DATA RANGE (max_val > u32::MAX) ] <<<
 
 --- 64-bit Scenario | Strategy: Grouped ---
-  -> SAPRI (Native 64-bit):   599.241182ms
+  -> SAPRI (Native 64-bit):    599.241182ms
   -> Quicksort (Unstable):     568.170373ms
   [✓] Accuracy verified.
 
 --- 64-bit Scenario | Strategy: Concentrated ---
-  -> SAPRI (Native 64-bit):   534.9349ms
+  -> SAPRI (Native 64-bit):    534.9349ms
   -> Quicksort (Unstable):     692.269522ms
   [✓] Accuracy verified.
 
 --- 64-bit Scenario | Strategy: Max90OnBlock ---
-  -> SAPRI (Native 64-bit):   751.901823ms
+  -> SAPRI (Native 64-bit):    751.901823ms
   -> Quicksort (Unstable):     751.457636ms
   [✓] Accuracy verified.
 
 =======================================================================
+
+```
+
 ---
 
 ## Specialized Domain Benchmarks: 8-bit & 16-bit Engines
@@ -124,43 +133,44 @@ SAPRI features dedicated specialized sorting engines optimized for bounded numer
 * **16-bit Specialized Engine ($\max \le 65,535$):** Evaluates performance on moderately bounded datasets. On massive volumes ($10\text{M}$ elements), both serial and parallel 16-bit engines drastically outperform standard library sorting, reducing execution time from over $614\text{ ms}$ down to $\sim 141\text{ ms}$, while maintaining zero overhead on small inputs via the router's fast-path guard.
 * **8-bit Specialized Engine ($\max \le 255$):** Unleashes pure $O(N)$ counting sort efficiency on tightly bounded domains. On 10 million elements, SAPRI completes the sort in roughly **$67\text{ ms}$** compared to $432\text{ ms}$ for standard Quicksort, delivering more than a $6\times$ performance boost through optimized memory scanning and allocation-free execution.
 
----
+```text
+=======================================================================
      SAPRI ENGINE - SPECIALIZED 16-BIT CUT BENCHMARK SUITE
----
+=======================================================================
 Size: 100        
-  ├─ SAPRI Parallel (16):   18.648µs
-  ├─ SAPRI Serial (16):     3.911µs
-  └─ Quicksort (Std):       3.772µs | Status: [✓] Success
+  ├─ SAPRI Parallel (16):    18.648µs
+  ├─ SAPRI Serial (16):      3.911µs
+  └─ Quicksort (Std):        3.772µs | Status: [✓] Success
 -----------------------------------------------------------------------
 Size: 100      | SAPRI Router: 2.444µs | Std Quicksort: 1.956µs
-Size: 1000      
-  ├─ SAPRI Parallel (16):   30.242µs
-  ├─ SAPRI Serial (16):     29.543µs
-  └─ Quicksort (Std):       29.194µs | Status: [✓] Success
+Size: 1000       
+  ├─ SAPRI Parallel (16):    30.242µs
+  ├─ SAPRI Serial (16):      29.543µs
+  └─ Quicksort (Std):        29.194µs | Status: [✓] Success
 -----------------------------------------------------------------------
 Size: 1000     | SAPRI Router: 2.165µs | Std Quicksort: 3.073µs
 Size: 10000    | SAPRI Router: 360.663µs | Std Quicksort: 353.47µs
-Size: 10000     
-  ├─ SAPRI Parallel (16):   2.647355ms
-  ├─ SAPRI Serial (16):     805.556µs
-  └─ Quicksort (Std):       399.007µs | Status: [✓] Success
+Size: 10000      
+  ├─ SAPRI Parallel (16):    2.647355ms
+  ├─ SAPRI Serial (16):      805.556µs
+  └─ Quicksort (Std):        399.007µs | Status: [✓] Success
 -----------------------------------------------------------------------
 Size: 100000   | SAPRI Router: 5.13533ms | Std Quicksort: 4.690578ms
 test test_router_small_datasets_behavior ... ok
-Size: 100000    
-  ├─ SAPRI Parallel (16):   2.511862ms
-  ├─ SAPRI Serial (16):     1.314423ms
-  └─ Quicksort (Std):       4.45989ms | Status: [✓] Success
+Size: 100000     
+  ├─ SAPRI Parallel (16):    2.511862ms
+  ├─ SAPRI Serial (16):      1.314423ms
+  └─ Quicksort (Std):        4.45989ms | Status: [✓] Success
 -----------------------------------------------------------------------
-Size: 1000000   
-  ├─ SAPRI Parallel (16):   14.468854ms
-  ├─ SAPRI Serial (16):     8.369077ms
-  └─ Quicksort (Std):       53.906721ms | Status: [✓] Success
+Size: 1000000    
+  ├─ SAPRI Parallel (16):    14.468854ms
+  ├─ SAPRI Serial (16):      8.369077ms
+  └─ Quicksort (Std):        53.906721ms | Status: [✓] Success
 -----------------------------------------------------------------------
-Size: 10000000  
-  ├─ SAPRI Parallel (16):   141.264049ms
-  ├─ SAPRI Serial (16):     99.590754ms
-  └─ Quicksort (Std):       614.216119ms | Status: [✓] Success
+Size: 10000000   
+  ├─ SAPRI Parallel (16):    141.264049ms
+  ├─ SAPRI Serial (16):      99.590754ms
+  └─ Quicksort (Std):        614.216119ms
 =======================================================================
 
 
@@ -169,43 +179,45 @@ Size: 10000000
 =======================================================================
 Size: 100      | SAPRI Router: 10.197µs | Std Quicksort: 2.445µs
 Size: 1000     | SAPRI Router: 3.213µs | Std Quicksort: 3.073µs
-Size: 100       
-  ├─ SAPRI Parallel (8):    5.657µs
-  ├─ SAPRI Serial (8):      82.063µs
-  └─ Quicksort (Std):       3.911µs | Status: [✓] Success
+Size: 100        
+  ├─ SAPRI Parallel (8):     5.657µs
+  ├─ SAPRI Serial (8):       82.063µs
+  └─ Quicksort (Std):        3.911µs | Status: [✓] Success
 -----------------------------------------------------------------------
-Size: 1000      
-  ├─ SAPRI Parallel (8):    28.914µs
-  ├─ SAPRI Serial (8):      57.409µs
-  └─ Quicksort (Std):       28.356µs | Status: [✓] Success
+Size: 1000       
+  ├─ SAPRI Parallel (8):     28.914µs
+  ├─ SAPRI Serial (8):       57.409µs
+  └─ Quicksort (Std):        28.356µs | Status: [✓] Success
 -----------------------------------------------------------------------
 Size: 10000    | SAPRI Router: 379.099µs | Std Quicksort: 353.258µs
-Size: 10000     
-  ├─ SAPRI Parallel (8):    423.099µs
-  ├─ SAPRI Serial (8):      37.016µs
-  └─ Quicksort (Std):       229.918µs | Status: [✓] Success
+Size: 10000      
+  ├─ SAPRI Parallel (8):     423.099µs
+  ├─ SAPRI Serial (8):       37.016µs
+  └─ Quicksort (Std):        229.918µs | Status: [✓] Success
 -----------------------------------------------------------------------
-Size: 100000    
-  ├─ SAPRI Parallel (8):    514.242µs
-  ├─ SAPRI Serial (8):      388.597µs
-  └─ Quicksort (Std):       2.388644ms | Status: [✓] Success
+Size: 100000     
+  ├─ SAPRI Parallel (8):     514.242µs
+  ├─ SAPRI Serial (8):       388.597µs
+  └─ Quicksort (Std):        2.388644ms | Status: [✓] Success
 -----------------------------------------------------------------------
 Size: 100000   | SAPRI Router: 4.69739ms | Std Quicksort: 4.547929ms
 test test_router_small_datasets_behavior ... ok
-Size: 1000000   
-  ├─ SAPRI Parallel (8):    10.665262ms
-  ├─ SAPRI Serial (8):      10.706259ms
-  └─ Quicksort (Std):       25.954301ms | Status: [✓] Success
+Size: 1000000    
+  ├─ SAPRI Parallel (8):     10.665262ms
+  ├─ SAPRI Serial (8):       10.706259ms
+  └─ Quicksort (Std):        25.954301ms | Status: [✓] Success
 -----------------------------------------------------------------------
-Size: 10000000  
-  ├─ SAPRI Parallel (8):    67.947807ms
-  ├─ SAPRI Serial (8):      64.910896ms
-  └─ Quicksort (Std):       432.519565ms | Status: [✓] Success
+Size: 10000000   
+  ├─ SAPRI Parallel (8):     67.947807ms
+  ├─ SAPRI Serial (8):       64.910896ms
+  └─ Quicksort (Std):        432.519565ms
 =======================================================================
+
+```
 
 ---
 
-## SAPRI API Reference Guide
+# SAPRI API Reference Guide
 
 This document provides a comprehensive overview of the public interface exposed by the **SAPRI** sorting library, covering core runtime configuration, memory arenas, dynamic threshold routing, high-level sorting shorthands, and specialized signed-type extensions.
 
@@ -216,7 +228,9 @@ This document provides a comprehensive overview of the public interface exposed 
 #### `BitTopology`
 
 ```rust
-pub enum BitTopology
+pub enum BitTopology {
+    Adaptive,
+}
 
 ```
 
@@ -262,7 +276,12 @@ pub struct SapriParallelArena {
 
 #### `run_with_threshold_checks`
 
-`fn run_with_threshold_checks<F>(data: &mut [u64], max_val: u64, _topology: BitTopology, fallback_radix_path: F) where F: FnOnce(&mut [u64], usize)`
+```rust
+fn run_with_threshold_checks<F>(data: &mut [u64], max_val: u64, _topology: BitTopology, fallback_radix_path: F) 
+where 
+    F: FnOnce(&mut [u64], usize)
+
+```
 
 * **Description:** Centralized micro-routing wrapper. Intercepts incoming workloads to execute hardware threshold evaluations and domain routing:
 1. *Micro-arrays ($N \le 32$):* Dispatches directly to standard unstable sort to eliminate dispatch overhead.
