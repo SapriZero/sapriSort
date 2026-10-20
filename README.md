@@ -16,7 +16,7 @@ Add this to your `Cargo.toml`:
 ```toml
 [dependencies]
 sapri = "0.1" # o la versione corrente
-
+```
 ---
 
 ## Architecture & Sorting Strategies: LSD vs MSD
