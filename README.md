@@ -74,9 +74,9 @@ In the 64-bit domain, the results highlight the structural limits of radix sorti
 ### Architectural Conclusion
 This benchmark suite demonstrates why SAPRI is a true **hybrid engine**: it achieves extraordinary performance on bounded and 32-bit domains (where linear counting/radix sort shines), while relying on intelligent router thresholds and fallback strategies to handle large-scale, high-entropy 64-bit data effectively.
 
-=======================================================================
+---
    SAPRI HYBRID ENGINE BENCHMARK SUITE - 32 vs 64 BIT MATRIX EVALUATION
-=======================================================================
+---
 
 >>> [ MACRO BLOCK: 32-BIT DATA RANGE (max_val <= u32::MAX) ] <<<
 
@@ -124,9 +124,9 @@ SAPRI features dedicated specialized sorting engines optimized for bounded numer
 * **16-bit Specialized Engine ($\max \le 65,535$):** Evaluates performance on moderately bounded datasets. On massive volumes ($10\text{M}$ elements), both serial and parallel 16-bit engines drastically outperform standard library sorting, reducing execution time from over $614\text{ ms}$ down to $\sim 141\text{ ms}$, while maintaining zero overhead on small inputs via the router's fast-path guard.
 * **8-bit Specialized Engine ($\max \le 255$):** Unleashes pure $O(N)$ counting sort efficiency on tightly bounded domains. On 10 million elements, SAPRI completes the sort in roughly **$67\text{ ms}$** compared to $432\text{ ms}$ for standard Quicksort, delivering more than a $6\times$ performance boost through optimized memory scanning and allocation-free execution.
 
-=======================================================================
+---
      SAPRI ENGINE - SPECIALIZED 16-BIT CUT BENCHMARK SUITE
-=======================================================================
+---
 Size: 100        
   ├─ SAPRI Parallel (16):   18.648µs
   ├─ SAPRI Serial (16):     3.911µs
