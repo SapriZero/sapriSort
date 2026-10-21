@@ -128,7 +128,16 @@ fn sapri_radix_32bit_parallel_engine(
                 let current_src = unsafe { std::slice::from_raw_parts(src_ptr, n) };
                 let hists = phase_1_parallel_u32(current_src, shift);
                 
-                if check_can_skip_pass(&hists, n) {
+                let current_src = unsafe { std::slice::from_raw_parts(src_ptr, n) };
+			    let hists = phase_1_parallel_u32(current_src, shift);
+			
+			    if check_can_skip_pass(&hists, n) {
+			        // I dati non si muovono: niente swap, location invariata.
+			        // Se era l'ultimo pass, l'upcast finale pensa a tutto.
+			        continue;
+			    }
+                
+               /* if check_can_skip_pass(&hists, n) {
                     if is_last {
                         if data_location == DataLocation::ScratchA {
                             linear_upcast_u32_to_u64(&scratch_a[..n], data);
@@ -146,7 +155,7 @@ fn sapri_radix_32bit_parallel_engine(
                     src_ptr = dst_ptr;
                     dst_ptr = temp;
                     continue;
-                }
+                } */
 
                 let smap = compute_scatter_map(&hists);
                 if is_last {
